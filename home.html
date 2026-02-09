@@ -142,6 +142,10 @@
       background: linear-gradient(135deg, #be185d 0%, #831843 100%);
       box-shadow: 0 6px 24px rgba(190,24,93,0.25);
     }
+    .game-card--dinos {
+      background: linear-gradient(135deg, #16a34a 0%, #0d6b2e 100%);
+      box-shadow: 0 6px 24px rgba(22,163,74,0.25);
+    }
 
     .game-icon {
       font-size: 40px;
@@ -185,6 +189,7 @@
     .game-card:nth-child(4) { animation-delay: 0.2s; }
     .game-card:nth-child(5) { animation-delay: 0.25s; }
     .game-card:nth-child(6) { animation-delay: 0.3s; }
+    .game-card:nth-child(7) { animation-delay: 0.35s; }
 
     .header { animation: fade-in 0.4s ease-out both; }
 
@@ -257,6 +262,15 @@
         <div class="game-info">
           <div class="game-name">Fruit Match</div>
           <div class="game-desc">Find the matching fruits!</div>
+        </div>
+        <span class="game-arrow">›</span>
+      </a>
+
+      <a href="dino-match/index.html" class="game-card game-card--dinos">
+        <div class="game-icon">🦖</div>
+        <div class="game-info">
+          <div class="game-name">Dino Match</div>
+          <div class="game-desc">Match the prehistoric creatures!</div>
         </div>
         <span class="game-arrow">›</span>
       </a>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'match-games-v2';
+const CACHE_NAME = 'match-games-v3';
 
 const ASSETS = [
   '/home.html',
@@ -48,6 +48,10 @@ const ASSETS = [
   '/fruit-match/styles.css',
   '/fruit-match/game.js',
   '/fruit-match/sounds.js',
+  '/dino-match/index.html',
+  '/dino-match/styles.css',
+  '/dino-match/game.js',
+  '/dino-match/sounds.js',
 ];
 
 self.addEventListener('install', event => {
