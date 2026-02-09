@@ -1,0 +1,596 @@
+/* ============================================
+   Fruit Match! — Pink/Lime Theme
+   ============================================ */
+
+:root {
+  --bg: #1c0a18;
+  --card-back: linear-gradient(145deg, #ec4899, #f472b6);
+  --card-back-pattern: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 50%);
+  --accent: #ec4899;
+  --accent-dark: #db2777;
+  --gold: #fbbf24;
+  --green: #84cc16;
+  --surface: rgba(255,255,255,0.08);
+  --text: #fff;
+  --text-dim: rgba(255,255,255,0.6);
+  --radius: 16px;
+  --font: 'Fredoka', sans-serif;
+}
+
+/* ---------- 1. Reset ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* ---------- 2. HTML ---------- */
+html {
+  height: 100%;
+}
+
+/* ---------- 3. Body ---------- */
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* ---------- 4. Hidden ---------- */
+.hidden {
+  display: none !important;
+}
+
+/* ---------- 5. Button base ---------- */
+.btn {
+  font-family: var(--font);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* ---------- 6. Button active ---------- */
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* ---------- 7. Play button ---------- */
+.btn-play {
+  background: linear-gradient(145deg, #ec4899, #f472b6);
+  color: #1c0a18;
+  font-size: 22px;
+  padding: 18px 48px;
+  border-radius: 60px;
+  box-shadow: 0 4px 24px rgba(236, 72, 153, 0.4), 0 0 60px rgba(236, 72, 153, 0.15);
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ---------- 8. Button icon ---------- */
+.btn-icon {
+  font-size: 18px;
+}
+
+/* ---------- 9. Restart button ---------- */
+.btn-restart {
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  padding: 12px 32px;
+  border-radius: 40px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ---------- 10. Screen base ---------- */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- 11. Start screen ---------- */
+.start-screen {
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* ---------- 12. Start content ---------- */
+.start-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+}
+
+/* ---------- 13. Background pattern ---------- */
+.start-bg-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(244, 114, 182, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(219, 39, 119, 0.06) 0%, transparent 70%);
+}
+
+/* ---------- 14. Start emojis ---------- */
+.start-emojis {
+  font-size: 42px;
+  margin-bottom: 28px;
+  letter-spacing: 4px;
+  animation: float-in 0.8s ease-out;
+}
+
+/* ---------- 15. Start title ---------- */
+.start-title {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  background: linear-gradient(to bottom right, #ffffff, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---------- 16. Start subtitle ---------- */
+.start-subtitle {
+  font-size: 18px;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+}
+
+/* ---------- 17. Game header ---------- */
+.game-screen {
+  background: var(--bg);
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+
+.home-btn {
+  font-size: 28px;
+  color: var(--text);
+  text-decoration: none;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--surface);
+  transition: background 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.home-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.home-btn:active {
+  transform: scale(0.92);
+}
+
+.game-title {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(to right, #ffffff, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+
+.game-progress {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.progress-bar {
+  width: 60px;
+  height: 8px;
+  background: var(--surface);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.progress-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dim);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ---------- 18. Game scroll area ---------- */
+.game-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+}
+
+/* ---------- 19. Card grid ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* ---------- 20. Card wrapper ---------- */
+.card-wrapper {
+  perspective: 800px;
+  aspect-ratio: 1;
+}
+
+/* ---------- 21. Card ---------- */
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: var(--radius);
+}
+
+/* ---------- 22. Card flipped / matched ---------- */
+.card.flipped,
+.card.matched {
+  transform: rotateY(180deg);
+}
+
+/* ---------- 23. Matched card glow ---------- */
+.card.matched .card-front {
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1);
+}
+
+/* ---------- 24. Card face ---------- */
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* ---------- 25. Card back ---------- */
+.card-back {
+  background: var(--card-back);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.card-back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: var(--card-back-pattern);
+  pointer-events: none;
+}
+
+/* ---------- 26. Card back icon ---------- */
+.card-back-icon {
+  font-size: 32px;
+  position: relative;
+  z-index: 1;
+  opacity: 0.9;
+  font-weight: 700;
+  color: white;
+}
+
+/* ---------- 27. Card front ---------- */
+.card-front {
+  transform: rotateY(180deg);
+  background: #2d0a24;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+/* ---------- 28. Card emoji ---------- */
+.card-emoji {
+  font-size: 48px;
+  line-height: 1;
+}
+
+/* ---------- 29. Card name ---------- */
+.card-name {
+  padding: 4px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  margin-top: 4px;
+}
+
+/* ---------- 30. Hover / active ---------- */
+.card-wrapper:hover .card:not(.flipped):not(.matched) {
+  transform: scale(1.03);
+}
+
+.card-wrapper:active .card:not(.flipped):not(.matched) {
+  transform: scale(0.97);
+}
+
+/* ---------- 31. Match celebrate ---------- */
+.card.match-celebrate {
+  animation: match-boom 0.5s ease-out;
+}
+
+/* ---------- 32. Game footer ---------- */
+.game-footer {
+  display: flex;
+  justify-content: center;
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+
+/* ---------- 33. Win screen ---------- */
+.win-screen {
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.win-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.win-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.05) 40%, transparent 70%);
+  animation: burst-spin 10s linear infinite;
+  pointer-events: none;
+}
+
+.win-emoji {
+  font-size: 80px;
+  margin-bottom: 16px;
+  animation: bounce-in 0.6s ease-out;
+}
+
+.win-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, var(--gold), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.win-subtitle {
+  font-size: 18px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+/* ---------- 34. Animal parade ---------- */
+.animal-parade {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 32px;
+  font-size: 48px;
+}
+
+.animal-parade span {
+  animation: bounce-in 0.4s ease-out backwards;
+}
+
+.animal-parade span:nth-child(1) { animation-delay: 0.1s; }
+.animal-parade span:nth-child(2) { animation-delay: 0.2s; }
+.animal-parade span:nth-child(3) { animation-delay: 0.3s; }
+.animal-parade span:nth-child(4) { animation-delay: 0.4s; }
+.animal-parade span:nth-child(5) { animation-delay: 0.5s; }
+.animal-parade span:nth-child(6) { animation-delay: 0.6s; }
+
+/* ---------- 35. Win home link ---------- */
+.win-home-link {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 16px;
+  transition: color 0.2s ease;
+}
+
+.win-home-link:hover {
+  color: var(--text);
+}
+
+/* ---------- 36. Confetti ---------- */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: confetti-fall 3s ease-in forwards;
+}
+
+/* ---------- 37. Keyframes ---------- */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 24px rgba(236, 72, 153, 0.4), 0 0 60px rgba(236, 72, 153, 0.15);
+  }
+  50% {
+    box-shadow: 0 4px 32px rgba(236, 72, 153, 0.6), 0 0 80px rgba(236, 72, 153, 0.25);
+  }
+}
+
+@keyframes float-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes match-boom {
+  0% {
+    transform: rotateY(180deg) scale(1);
+  }
+  40% {
+    transform: rotateY(180deg) scale(1.15);
+  }
+  100% {
+    transform: rotateY(180deg) scale(1);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(30px);
+  }
+  60% {
+    transform: scale(1.15) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes burst-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
+}
+
+@keyframes card-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotateZ(-10deg);
+  }
+  60% {
+    transform: scale(1.05) rotateZ(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateZ(0deg);
+  }
+}
+
+/* ---------- 38. Scrollbar ---------- */
+.game-scroll-area::-webkit-scrollbar {
+  width: 4px;
+}
+
+.game-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.game-scroll-area::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+}
+
+.game-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.25);
+}

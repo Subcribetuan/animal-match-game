@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80">
+  <rect width="120" height="80" fill="#fff"/>
+  <g fill="#CC0001">
+    <rect width="120" height="6"/>
+    <rect y="11.4" width="120" height="6"/>
+    <rect y="22.8" width="120" height="6"/>
+    <rect y="34.3" width="120" height="6"/>
+    <rect y="45.7" width="120" height="6"/>
+    <rect y="57.1" width="120" height="6"/>
+    <rect y="68.6" width="120" height="6"/>
+  </g>
+  <rect width="56" height="45" fill="#010066"/>
+  <circle cx="24" cy="22" r="12" fill="#FC0"/>
+  <circle cx="27" cy="22" r="10" fill="#010066"/>
+  <polygon fill="#FC0" points="40,22 43,27 38,24 42,24 37,27" transform="scale(1.4) translate(10,2)"/>
+</svg>

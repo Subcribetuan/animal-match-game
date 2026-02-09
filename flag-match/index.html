@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Flag Match!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="start-screen" class="screen start-screen">
+    <div class="start-content">
+      <div class="start-flags" id="start-flags"></div>
+      <h1 class="start-title">Flag<br>Match!</h1>
+      <p class="start-subtitle">Match the Southeast Asian flags</p>
+      <button class="btn btn-play" id="start-btn">
+        <span class="btn-icon">&#9654;</span>
+        <span>Let's Play!</span>
+      </button>
+    </div>
+    <div class="start-bg-pattern"></div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen game-screen hidden">
+    <header class="game-header">
+      <a href="../home.html" class="home-btn" title="Home">&#8962;</a>
+      <h1 class="game-title">Flag Match!</h1>
+      <div class="game-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="progress-text" id="progress-text">0 / 6</span>
+      </div>
+    </header>
+    <div class="game-scroll-area">
+      <div id="card-grid" class="card-grid"></div>
+    </div>
+    <footer class="game-footer">
+      <button class="btn btn-restart" id="new-game-btn">New Game</button>
+    </footer>
+  </div>
+
+  <!-- Win Screen -->
+  <div id="win-screen" class="screen win-screen hidden">
+    <div class="win-content">
+      <div class="win-burst"></div>
+      <div class="win-emoji">&#127942;</div>
+      <h1 class="win-title">Amazing!</h1>
+      <p class="win-subtitle">You matched all the flags!</p>
+      <div id="flag-parade" class="flag-parade"></div>
+      <button class="btn btn-play" id="play-again-btn">Play Again!</button>
+      <a href="../home.html" class="win-home-link">Back to Games</a>
+    </div>
+  </div>
+
+  <div id="confetti-container" class="confetti-container hidden"></div>
+  <script src="sounds.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
