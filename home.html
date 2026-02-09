@@ -202,10 +202,158 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    /* Password screen */
+    .lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #1a1028;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .lock-screen.hidden { display: none; }
+
+    .lock-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 340px;
+      width: 100%;
+      animation: fade-in 0.4s ease-out;
+    }
+
+    .lock-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .lock-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #fff 0%, #ffd166 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lock-subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 28px;
+    }
+
+    .lock-input {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 2px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      text-align: center;
+      letter-spacing: 2px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .lock-input:focus {
+      border-color: rgba(255,209,102,0.5);
+    }
+
+    .lock-input.shake {
+      animation: shake 0.4s ease;
+      border-color: #ef4444;
+    }
+
+    .lock-remember {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    .lock-remember input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #ffd166;
+      cursor: pointer;
+    }
+
+    .lock-remember span {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 500;
+    }
+
+    .lock-btn {
+      margin-top: 24px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #ffd166, #f59e0b);
+      color: #1a1028;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 0.15s;
+    }
+
+    .lock-btn:active {
+      transform: scale(0.96);
+    }
+
+    .lock-error {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #ef4444;
+      font-weight: 500;
+      min-height: 20px;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
   </style>
 </head>
 <body>
-  <div class="page">
+  <!-- Password Screen -->
+  <div id="lock-screen" class="lock-screen">
+    <div class="lock-box">
+      <div class="lock-icon">🔒</div>
+      <h1 class="lock-title">Match Games!</h1>
+      <p class="lock-subtitle">Enter password to play</p>
+      <input type="password" class="lock-input" id="lock-input" placeholder="Password" autocomplete="off" inputmode="text">
+      <label class="lock-remember">
+        <input type="checkbox" id="lock-remember">
+        <span>Remember password</span>
+      </label>
+      <button class="lock-btn" id="lock-btn">Unlock</button>
+      <div class="lock-error" id="lock-error"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page" style="display:none">
     <div class="header">
       <h1 class="title">Match Games!</h1>
       <p class="subtitle">Pick a game to play</p>
@@ -276,6 +424,55 @@
       </a>
     </div>
   </div>
+<script>
+  const HASH = '28d20e2036bc6866efc69f0a4d8fef939654504433b4be05e85c152e068211af';
+  const lockScreen = document.getElementById('lock-screen');
+  const page = document.getElementById('page');
+  const lockInput = document.getElementById('lock-input');
+  const lockBtn = document.getElementById('lock-btn');
+  const lockError = document.getElementById('lock-error');
+  const lockRemember = document.getElementById('lock-remember');
+
+  async function sha256(text) {
+    const data = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function unlock() {
+    lockScreen.classList.add('hidden');
+    page.style.display = '';
+  }
+
+  // Check if remembered
+  if (localStorage.getItem('matchGamesAuth') === HASH) {
+    unlock();
+  } else {
+    lockInput.focus();
+  }
+
+  async function tryUnlock() {
+    const val = lockInput.value;
+    if (!val) return;
+    const hash = await sha256(val);
+    if (hash === HASH) {
+      if (lockRemember.checked) {
+        localStorage.setItem('matchGamesAuth', HASH);
+      }
+      unlock();
+    } else {
+      lockError.textContent = 'Wrong password';
+      lockInput.classList.add('shake');
+      setTimeout(() => lockInput.classList.remove('shake'), 400);
+    }
+  }
+
+  lockBtn.addEventListener('click', tryUnlock);
+  lockInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryUnlock();
+    lockError.textContent = '';
+  });
+</script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
