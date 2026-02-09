@@ -85,14 +85,14 @@ body {
 
 /* ---------- 9. Restart button ---------- */
 .btn-restart {
-  background: var(--surface);
+  background: rgba(255,255,255,0.12);
   color: var(--text);
   font-size: 16px;
-  padding: 12px 32px;
+  padding: 14px 36px;
   border-radius: 40px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
 }
 
 /* ---------- 10. Screen base ---------- */
@@ -261,6 +261,7 @@ body {
 .card-wrapper {
   perspective: 800px;
   aspect-ratio: 1;
+  touch-action: manipulation;
 }
 
 /* ---------- 21. Card ---------- */
@@ -319,7 +320,7 @@ body {
 
 /* ---------- 26. Card back icon ---------- */
 .card-back-icon {
-  font-size: 32px;
+  font-size: 44px;
   position: relative;
   z-index: 1;
   opacity: 0.9;
@@ -356,10 +357,11 @@ body {
 }
 
 /* ---------- 30. Hover / active ---------- */
-.card-wrapper:hover .card:not(.flipped):not(.matched) {
-  transform: scale(1.03);
+@media (hover: hover) {
+  .card-wrapper:hover .card:not(.flipped):not(.matched) {
+    transform: scale(1.03);
+  }
 }
-
 .card-wrapper:active .card:not(.flipped):not(.matched) {
   transform: scale(0.97);
 }
