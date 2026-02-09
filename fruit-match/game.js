@@ -17,6 +17,33 @@ let flipped = [];
 let matched = [];
 let isProcessing = false;
 
+const STORAGE_KEY = 'fruitMatch';
+
+function saveState() {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+      cards, matched
+    }));
+  } catch(e) {}
+}
+
+function clearState() {
+  sessionStorage.removeItem(STORAGE_KEY);
+}
+
+function restoreState() {
+  try {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    const state = JSON.parse(saved);
+    cards = state.cards;
+    matched = state.matched;
+    flipped = [];
+    isProcessing = false;
+    return true;
+  } catch(e) { return false; }
+}
+
 // ---- DOM refs ----
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -163,11 +190,13 @@ function handleCardClick(card, cardEl) {
         flipped = [];
         isProcessing = false;
         updateProgress();
+        saveState();
 
         if (typeof playMatch === 'function') playMatch();
 
         // Win check
         if (matched.length === cards.length) {
+          clearState();
           setTimeout(() => {
             showWinScreen();
           }, 600);
@@ -202,6 +231,7 @@ function showWinScreen() {
 
 // ---- Init game ----
 function initGame() {
+  clearState();
   const doubled = [...fruits, ...fruits];
   const shuffled = shuffle(doubled);
   cards = shuffled.map((fruit, i) => ({
@@ -235,6 +265,20 @@ document.getElementById('play-again-btn').addEventListener('click', () => {
   if (typeof playWelcome === 'function') playWelcome();
   initGame();
 });
+
+// Save state when user leaves page
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && matched.length > 0) {
+    saveState();
+  }
+});
+
+// Restore game on load if state exists
+if (restoreState()) {
+  if (typeof initAudio === 'function') initAudio();
+  showScreen(gameScreen);
+  renderCards();
+}
 
 // ---- Prevent zoom on double tap ----
 document.addEventListener('dblclick', (e) => {

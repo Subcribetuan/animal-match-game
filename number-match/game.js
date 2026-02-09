@@ -18,6 +18,33 @@ let flipped = [];
 let matched = [];
 let isProcessing = false;
 
+const STORAGE_KEY = 'numberMatch';
+
+function saveState() {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+      cards, matched
+    }));
+  } catch(e) {}
+}
+
+function clearState() {
+  sessionStorage.removeItem(STORAGE_KEY);
+}
+
+function restoreState() {
+  try {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    const state = JSON.parse(saved);
+    cards = state.cards;
+    matched = state.matched;
+    flipped = [];
+    isProcessing = false;
+    return true;
+  } catch(e) { return false; }
+}
+
 // DOM
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -163,8 +190,10 @@ function handleCardClick(uniqueId) {
         markMatched(first);
         markMatched(second);
         updateProgress();
+        saveState();
 
         if (matched.length === 12) {
+          clearState();
           setTimeout(() => {
             playWin();
             showConfetti();
@@ -193,6 +222,7 @@ function showWinScreen() {
 
 // Init — creates one number card and one dice card per number
 function initGame() {
+  clearState();
   const numberCards = numbers.map(n => ({ id: n.id, emoji: n.emoji, name: n.name, type: 'number' }));
   const diceCards = numbers.map(n => ({ id: n.id, emoji: n.dice, name: n.name, type: 'dice' }));
   cards = shuffle([...numberCards, ...diceCards]).map((card, index) => ({
@@ -220,6 +250,20 @@ document.getElementById('play-again-btn').addEventListener('click', () => {
   playWelcome();
   initGame();
 });
+
+// Save state when user leaves page
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && matched.length > 0) {
+    saveState();
+  }
+});
+
+// Restore game on load if state exists
+if (restoreState()) {
+  initAudio();
+  showScreen(gameScreen);
+  renderCards();
+}
 
 // Prevent zoom on double tap
 let lastTouchEnd = 0;

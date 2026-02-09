@@ -23,6 +23,34 @@ let flipped = [];
 let matched = [];
 let isProcessing = false;
 
+const STORAGE_KEY = 'foodMatch';
+
+function saveState() {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+      cards, matched, roundFoods
+    }));
+  } catch(e) {}
+}
+
+function clearState() {
+  sessionStorage.removeItem(STORAGE_KEY);
+}
+
+function restoreState() {
+  try {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    const state = JSON.parse(saved);
+    cards = state.cards;
+    matched = state.matched;
+    roundFoods = state.roundFoods;
+    flipped = [];
+    isProcessing = false;
+    return true;
+  } catch(e) { return false; }
+}
+
 // DOM
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -164,8 +192,10 @@ function handleCardClick(uniqueId) {
         markMatched(first);
         markMatched(second);
         updateProgress();
+        saveState();
 
         if (matched.length === CARDS_PER_ROUND * 2) {
+          clearState();
           setTimeout(() => {
             playWin();
             showConfetti();
@@ -191,6 +221,7 @@ function showWinScreen() {
 
 // Init
 function initGame() {
+  clearState();
   // Pick 6 random foods from the pool of 9
   const shuffledFoods = shuffle(foods);
   roundFoods = shuffledFoods.slice(0, CARDS_PER_ROUND);
@@ -220,6 +251,20 @@ document.getElementById('play-again-btn').addEventListener('click', () => {
   playWelcome();
   initGame();
 });
+
+// Save state when user leaves page
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && matched.length > 0) {
+    saveState();
+  }
+});
+
+// Restore game on load if state exists
+if (restoreState()) {
+  initAudio();
+  showScreen(gameScreen);
+  renderCards();
+}
 
 // Prevent zoom on double tap
 let lastTouchEnd = 0;

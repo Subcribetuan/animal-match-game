@@ -23,6 +23,34 @@ let flipped = [];
 let matched = [];
 let isProcessing = false;
 
+const STORAGE_KEY = 'familyMatch';
+
+function saveState() {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+      cards, matched, roundFamily
+    }));
+  } catch(e) {}
+}
+
+function clearState() {
+  sessionStorage.removeItem(STORAGE_KEY);
+}
+
+function restoreState() {
+  try {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    const state = JSON.parse(saved);
+    cards = state.cards;
+    matched = state.matched;
+    roundFamily = state.roundFamily;
+    flipped = [];
+    isProcessing = false;
+    return true;
+  } catch(e) { return false; }
+}
+
 // DOM
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -183,8 +211,10 @@ function handleCardClick(uniqueId) {
         markMatched(first);
         markMatched(second);
         updateProgress();
+        saveState();
 
         if (matched.length === CARDS_PER_ROUND * 2) {
+          clearState();
           setTimeout(() => {
             playWin();
             showConfetti();
@@ -213,6 +243,7 @@ function showWinScreen() {
 
 // Init — Benjamine & Christopher always included, pick 4 more randomly
 function initGame() {
+  clearState();
   const alwaysInclude = family.filter(f => f.name === 'Benjamine' || f.name === 'Christopher');
   const others = shuffle(family.filter(f => f.name !== 'Benjamine' && f.name !== 'Christopher'));
   roundFamily = [...alwaysInclude, ...others.slice(0, CARDS_PER_ROUND - alwaysInclude.length)];
@@ -241,6 +272,20 @@ document.getElementById('play-again-btn').addEventListener('click', () => {
   playWelcome();
   initGame();
 });
+
+// Save state when user leaves page
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && matched.length > 0) {
+    saveState();
+  }
+});
+
+// Restore game on load if state exists
+if (restoreState()) {
+  initAudio();
+  showScreen(gameScreen);
+  renderCards();
+}
 
 // Prevent zoom on double tap
 let lastTouchEnd = 0;
