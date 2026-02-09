@@ -115,7 +115,7 @@ function renderCards() {
     // Back face (question mark)
     const back = document.createElement('div');
     back.className = 'card-face card-back';
-    back.innerHTML = '<span class="card-back-icon">?</span>';
+    back.innerHTML = '<span class="card-back-icon">❤️</span>';
 
     // Front face (photo)
     const front = document.createElement('div');

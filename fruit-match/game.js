@@ -95,7 +95,7 @@ function renderCards() {
     back.className = 'card-face card-back';
     const backIcon = document.createElement('span');
     backIcon.className = 'card-back-icon';
-    backIcon.textContent = '?';
+    backIcon.textContent = '🍉';
     back.appendChild(backIcon);
 
     // Card front

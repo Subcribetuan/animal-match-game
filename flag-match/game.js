@@ -95,7 +95,7 @@ function renderCards() {
 
     const back = document.createElement('div');
     back.className = 'card-face card-back';
-    back.innerHTML = '<span class="card-back-icon">?</span>';
+    back.innerHTML = '<span class="card-back-icon">🌏</span>';
 
     const front = document.createElement('div');
     front.className = 'card-face card-front';
