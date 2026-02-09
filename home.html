@@ -95,9 +95,10 @@
       border-radius: 18px;
       text-decoration: none;
       color: #fff;
-      transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
       overflow: hidden;
+      touch-action: manipulation;
+      cursor: pointer;
     }
 
     .game-card::before {
@@ -109,8 +110,12 @@
       pointer-events: none;
     }
 
+    /* Hover/active only for devices that support hover (not touch) */
+    @media (hover: hover) {
+      .game-card { transition: transform 0.2s, box-shadow 0.2s; }
+      .game-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+    }
     .game-card:active { transform: scale(0.97); }
-    .game-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
 
     /* Game card themes */
     .game-card--animals {

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'match-games-v1';
+const CACHE_NAME = 'match-games-v2';
 
 const ASSETS = [
   '/home.html',
@@ -67,21 +67,27 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Only handle same-origin GET requests
   if (event.request.method !== 'GET') return;
 
+  // Let navigation requests (page clicks) go straight to network for instant response
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // For sub-resources (CSS, JS, images): serve from cache first
   event.respondWith(
     caches.match(event.request).then(cached => {
-      // Return cached version, but also fetch fresh copy in background
-      const fetchPromise = fetch(event.request).then(response => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
         if (response.ok) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
         return response;
-      }).catch(() => cached);
-
-      return cached || fetchPromise;
+      });
     })
   );
 });
