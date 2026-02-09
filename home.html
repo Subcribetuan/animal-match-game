@@ -248,9 +248,14 @@
       margin-bottom: 28px;
     }
 
+    .lock-input-wrap {
+      width: 100%;
+      position: relative;
+    }
+
     .lock-input {
       width: 100%;
-      padding: 16px 20px;
+      padding: 16px 48px 16px 20px;
       border-radius: 14px;
       border: 2px solid rgba(255,255,255,0.15);
       background: rgba(255,255,255,0.06);
@@ -273,6 +278,25 @@
     .lock-input.shake {
       animation: shake 0.4s ease;
       border-color: #ef4444;
+    }
+
+    .lock-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+      touch-action: manipulation;
+    }
+
+    .lock-toggle:active {
+      color: rgba(255,255,255,0.7);
     }
 
     .lock-remember {
@@ -343,7 +367,10 @@
       <div class="lock-icon">🔒</div>
       <h1 class="lock-title">Match Games!</h1>
       <p class="lock-subtitle">Enter password to play</p>
-      <input type="password" class="lock-input" id="lock-input" placeholder="Password" autocomplete="off" inputmode="text">
+      <div class="lock-input-wrap">
+        <input type="password" class="lock-input" id="lock-input" placeholder="Password" autocomplete="off" inputmode="text">
+        <button type="button" class="lock-toggle" id="lock-toggle" aria-label="Show password">&#128065;</button>
+      </div>
       <label class="lock-remember">
         <input type="checkbox" id="lock-remember">
         <span>Remember password</span>
@@ -466,6 +493,14 @@
       setTimeout(() => lockInput.classList.remove('shake'), 400);
     }
   }
+
+  const lockToggle = document.getElementById('lock-toggle');
+  lockToggle.addEventListener('click', () => {
+    const showing = lockInput.type === 'text';
+    lockInput.type = showing ? 'password' : 'text';
+    lockToggle.innerHTML = showing ? '&#128065;' : '&#128064;';
+    lockInput.focus();
+  });
 
   lockBtn.addEventListener('click', tryUnlock);
   lockInput.addEventListener('keydown', e => {
