@@ -280,6 +280,11 @@ body {
   transform: rotateY(180deg);
 }
 
+.card.flipped .card-back,
+.card.matched .card-back {
+  visibility: hidden;
+}
+
 /* ---------- 23. Matched card glow ---------- */
 .card.matched .card-front {
   box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), inset 0 0 20px rgba(251, 191, 36, 0.1);

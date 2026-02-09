@@ -261,6 +261,8 @@ body {
 
 .card.flipped { transform: rotateY(180deg); }
 .card.matched { transform: rotateY(180deg); }
+.card.flipped .card-back,
+.card.matched .card-back { visibility: hidden; }
 
 .card.matched .card-front {
   box-shadow: 0 0 0 3px var(--gold), 0 0 24px rgba(255,209,102,0.3);
