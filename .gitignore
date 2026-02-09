@@ -1,1 +1,5 @@
 .vercel
+node_modules
+generate-icons.js
+generate-icons.html
+icon-render.svg
